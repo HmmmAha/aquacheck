@@ -47,7 +47,7 @@ const register = (event) => {
   alert("Registration successful!");
   console.log("Redirecting to login page…");
   setTimeout(() => {
-    window.location.href = "./login.html";
+    window.location.href = "./Login.html";
   }, 1000);
 };
 
