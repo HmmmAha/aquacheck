@@ -1,1 +1,1 @@
-Untuk menjalankan aplikasi AquaCheck, silahkan jalankan AquaCheck.html
+Untuk menjalankan aplikasi AquaCheck, silahkan jalankan index.html
