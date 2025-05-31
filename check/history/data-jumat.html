@@ -17,7 +17,7 @@
             <img src="../asset/logo.png" alt="Logo" height="60px">
         </div>
         <div class="feature-container">
-            <a href="../../home, login, register/home/home-after.html" class="navbar-feature-wrap">
+            <a href="../../home_login_register/home/home-after.html" class="navbar-feature-wrap">
                 <button class="navbar-feature">
                     <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 37.5 37.5"><defs><clipPath id="a"><path d="M0 .809h37v35.523H0Zm0 0"/></clipPath></defs><g clip-path="url(#a)"><path fill="#63A39C" d="M31.66 36.2h-8.27a.577.577 0 0 1-.578-.579V23.887h-8.414V35.62c0 .32-.257.578-.578.578H5.344a.577.577 0 0 1-.578-.578v-17.23H.633a.58.58 0 0 1-.39-1.004l17.87-16.375a.58.58 0 0 1 .778 0l17.87 16.375c.176.16.235.41.15.633a.58.58 0 0 1-.54.37h-4.133v17.231c0 .32-.258.578-.578.578m-7.691-1.157h7.113v-17.23a.58.58 0 0 1 .578-.579h3.227L18.5 2.223 2.117 17.234h3.227a.58.58 0 0 1 .578.578v17.231h7.32V23.309c0-.32.258-.579.578-.579h9.57a.58.58 0 0 1 .579.579Zm0 0"/></g></svg>
                     <p class="navbar-text">Home</p>
@@ -116,5 +116,21 @@
             <p id="footer-copyright-text">&copy; 2025 AquaCheck. All rights reserved.</p>
         </div>
     </div>
+
+    <button id="cs-button" class="cs-button"><img src="../../cs logo.svg" alt="CS Logo" class="cs-icon" /></button>
+    <div id="overlay" class="overlay"></div>
+    <div id="chat-sidebar" class="chat-sidebar">
+        <header class="chat-header">
+            <span>Chat Admin</span>
+            <button id="close-chat" class="close-btn">×</button>
+        </header>
+        <div class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" placeholder="Tulis pesan..." />
+            <button class="send-btn">Kirim</button>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
 </body>
 </html>

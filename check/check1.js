@@ -29,27 +29,20 @@ mapInner.style.top  = `${currentY}px`;
 
 // Fungsi yang menganimasikan centering
 function centerOnPin() {
-    // Aktifkan transition untuk animasi
     mapInner.style.transition = 'left 0.4s ease-in-out, top 0.4s ease-in-out';
-
-    // Hitung kembali target agar pin di tengah
     const targetX = (fw / 2) - pinX;
     const targetY = (fh / 2) - pinY;
     currentX = clamp(targetX, minX, maxX);
     currentY = clamp(targetY, minY, maxY);
-
-    // Apply posisi baru
     mapInner.style.left = `${currentX}px`;
     mapInner.style.top  = `${currentY}px`;
-
-    // Setelah animasi selesai, matikan transition
     mapInner.addEventListener('transitionend', function handler() {
-    mapInner.style.transition = 'none';
-    mapInner.removeEventListener('transitionend', handler);
+        mapInner.style.transition = 'none';
+        mapInner.removeEventListener('transitionend', handler);
     });
 }
 
-// Panggil sekali untuk memastikan di-center pada load
+// Panggil sekali saat load
 centerOnPin();
 
 // --- Drag & pan logic ---
@@ -59,7 +52,6 @@ frame.addEventListener('mousedown', e => {
     frame.style.cursor = 'grabbing';
     startX = e.clientX;
     startY = e.clientY;
-    // nonaktifkan transition saat drag
     mapInner.style.transition = 'none';
 });
 
@@ -77,7 +69,6 @@ document.addEventListener('mouseup', () => {
     if (!isDragging) return;
     isDragging = false;
     frame.style.cursor = 'grab';
-    // simpan posisi untuk sesi drag berikutnya
     currentX = parseInt(mapInner.style.left, 10);
     currentY = parseInt(mapInner.style.top,  10);
 });
@@ -87,3 +78,23 @@ img.addEventListener('dragstart', e => e.preventDefault());
 // Hook tombol center
 document.getElementById('center-btn')
     .addEventListener('click', centerOnPin);
+
+// Chat sidebar toggle logic
+const csButton = document.getElementById('cs-button');
+const overlay  = document.getElementById('overlay');
+const sidebar  = document.getElementById('chat-sidebar');
+const closeBtn = document.getElementById('close-chat');
+if (csButton && overlay && sidebar && closeBtn) {
+    csButton.addEventListener('click', () => {
+        overlay.classList.add('active');
+        sidebar.classList.add('active');
+    });
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        sidebar.classList.remove('active');
+    });
+    overlay.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        sidebar.classList.remove('active');
+    });
+}

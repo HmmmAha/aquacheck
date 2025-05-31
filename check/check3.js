@@ -4,56 +4,67 @@ const img      = mapInner.querySelector('.map-bg');
 
 // Ukuran container & gambar
 const fw = frame.clientWidth,  fh = frame.clientHeight;
-const iw = img.clientWidth,  ih = img.clientHeight;
+const iw = img.naturalWidth,  ih = img.naturalHeight;
 
 // Batas pergeseran (clamp)
 const minX = fw - iw, maxX = 0;
 const minY = fh - ih, maxY = 0;
 
-// Koordinat
-const pinX = 608, pinY = 460;  // initial center
-const oriX = 605, oriY = 670;  // center on button
+// Koordinat main-pin
+const pinX = 608;
+const pinY = 460;
 
-// Fungsi clamp
-const clamp = (v, min, max) => Math.max(min, Math.min(v, max));
+// Helper untuk clamp
+function clamp(v, min, max) {
+    return Math.max(min, Math.min(v, max));
+}
 
-// 1) Inisialisasi: center ke pinX,pinY
-let currentX = clamp((fw/2) - pinX, minX, maxX);
-let currentY = clamp((fh/2) - pinY, minY, maxY);
+// Inisialisasi: posisikan peta sehingga main-pin di tengah
+let currentX = (fw / 2) - pinX;
+let currentY = (fh / 2) - pinY;
+currentX = clamp(currentX, minX, maxX);
+currentY = clamp(currentY, minY, maxY);
 mapInner.style.left = `${currentX}px`;
 mapInner.style.top  = `${currentY}px`;
 
-// 2) Fungsi animate-center: ke (x,y)
-function animateCenter(x, y) {
+// Fungsi yang menganimasikan centering
+function centerOnPin() {
     mapInner.style.transition = 'left 0.4s ease-in-out, top 0.4s ease-in-out';
-    currentX = clamp((fw/2) - x, minX, maxX);
-    currentY = clamp((fh/2) - y, minY, maxY);
+    const targetX = (fw / 2) - pinX;
+    const targetY = (fh / 2) - pinY;
+    currentX = clamp(targetX, minX, maxX);
+    currentY = clamp(targetY, minY, maxY);
     mapInner.style.left = `${currentX}px`;
     mapInner.style.top  = `${currentY}px`;
-
     mapInner.addEventListener('transitionend', function handler() {
-    mapInner.style.transition = 'none';
-    mapInner.removeEventListener('transitionend', handler);
+        mapInner.style.transition = 'none';
+        mapInner.removeEventListener('transitionend', handler);
     });
 }
 
-// 3) Drag & pan logic
+// Panggil sekali saat load
+centerOnPin();
+
+// --- Drag & pan logic ---
 let isDragging = false, startX = 0, startY = 0;
 frame.addEventListener('mousedown', e => {
     isDragging = true;
     frame.style.cursor = 'grabbing';
-    startX = e.clientX; startY = e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
     mapInner.style.transition = 'none';
 });
+
 document.addEventListener('mousemove', e => {
     if (!isDragging) return;
-    const dx = e.clientX - startX,
-        dy = e.clientY - startY;
-    const nx = clamp(currentX + dx, minX, maxX),
-        ny = clamp(currentY + dy, minY, maxY);
-    mapInner.style.left = `${nx}px`;
-    mapInner.style.top  = `${ny}px`;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const newX = clamp(currentX + dx, minX, maxX);
+    const newY = clamp(currentY + dy, minY, maxY);
+    mapInner.style.left = `${newX}px`;
+    mapInner.style.top  = `${newY}px`;
 });
+
 document.addEventListener('mouseup', () => {
     if (!isDragging) return;
     isDragging = false;
@@ -61,8 +72,29 @@ document.addEventListener('mouseup', () => {
     currentX = parseInt(mapInner.style.left, 10);
     currentY = parseInt(mapInner.style.top,  10);
 });
+
 img.addEventListener('dragstart', e => e.preventDefault());
 
-// 4) Hook tombol: tekan → center ke oriX, oriY
+// Hook tombol center
 document.getElementById('center-btn')
-    .addEventListener('click', () => animateCenter(oriX, oriY));
+    .addEventListener('click', centerOnPin);
+
+// Chat sidebar toggle logic
+const csButton = document.getElementById('cs-button');
+const overlay  = document.getElementById('overlay');
+const sidebar  = document.getElementById('chat-sidebar');
+const closeBtn = document.getElementById('close-chat');
+if (csButton && overlay && sidebar && closeBtn) {
+    csButton.addEventListener('click', () => {
+        overlay.classList.add('active');
+        sidebar.classList.add('active');
+    });
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        sidebar.classList.remove('active');
+    });
+    overlay.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        sidebar.classList.remove('active');
+    });
+}
