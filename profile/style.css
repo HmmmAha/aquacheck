@@ -98,6 +98,11 @@ body{
     font-style: normal;
 }
 
+main{
+    justify-content: center;
+    align-items: center;
+}
+
 #profile
 {
     font-family: "Poppins", sans-serif;
@@ -105,7 +110,8 @@ body{
     background-color: #E0FFFF;
     border-radius: 47px;
     height: 768px;
-    margin: 50px 100px;
+    margin: 50px auto;
+    max-width: fit-content;
 }
 
 #logout button
